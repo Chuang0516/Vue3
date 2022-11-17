@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 原数据
+      let person = {
+        name: '张三',
+        age: 18,
+      };
+
+      // 模拟 Vue2 中实现响应式
+      //   let p = {};
+      //   Object.defineProperty(p, 'name', {
+      //     configurable: true,
+      //     // 有人读取 name 时调用
+      //     get() {
+      //       return person.name;
+      //     },
+      //     // 有人修改 name 时调用
+      //     set(value) {
+      //       console.log('有人修改了name属性');
+      //       person.name = value;
+      //     },
+      //   });
+
+      // 模拟 Vue3 中实现响应式
+      const p = new Proxy(person, {
+        // 读取
+        get(target, propName) {
+          console.log(`有人读取了p身上的${propName}属性`);
+          return Reflect.get(target, propName);
+        },
+        // 修改、新增
+        set(target, propName, value) {
+          console.log(`有人修改了p身上的${propName}属性，我要去更新界面了`);
+          Reflect.set(target, propName, value);
+        },
+        // 删除
+        deleteProperty(target, propName) {
+          console.log(`有人删除了p身上的${propName}属性，我要去更新界面了`);
+          return Reflect.deleteProperty(target, propName);
+        },
+      });
+
+      // let obj = { a: 1, b: 2 };
+
+      // Reflect.defineProperty(obj, 'c', {
+      //   get() {
+      //     return 3;
+      //   },
+      // });
+    </script>
+  </body>
+</html>
