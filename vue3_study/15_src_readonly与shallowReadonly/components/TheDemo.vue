@@ -1,5 +1,4 @@
 <template>
-    <h4>{{ person }}</h4>
     <h2>姓名：{{ name }}</h2>
     <h2>年龄：{{ age }}</h2>
     <h2>薪资：{{ job.j1.salary }}</h2>
@@ -9,32 +8,30 @@
 </template>
   
 <script>
-import { shallowReactive, shallowRef, toRefs } from 'vue'
+import { ref, reactive, toRefs, readonly, shallowReadonly } from 'vue'
 
 export default {
     name: 'TheDemo',
     setup() {
 
-        // shallowReactive 仅对第一层数据添加响应式
-        let person = shallowReactive({
+        let sum = ref(0);
+
+        let person = reactive({
             name: '张三',
             age: 18,
             job: {
                 j1: {
-                    salary: 20
-                }
-            }
+                    salary: 20,
+                },
+            },
         });
 
-        // shallowRef 不会给对象类型的数据添加响应式
-        let x = shallowRef({
-            y: 0
-        })
+        // person = readonly(person);
+        person = shallowReadonly(person);
 
         return {
-            person,
-            x,
-            ...toRefs(person)
+            sum,
+            ...toRefs(person),
         }
 
     }
